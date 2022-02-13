@@ -17,11 +17,12 @@ import yadisk
 
 load_dotenv()
 ua = UserAgent()
-y = yadisk.YaDisk(token="AQAAAAAeeuFqAAeVCjRRWT3G8khEv1eCtEu6uY4")
 
+YANDEX_TOKEN = os.getenv('YANDEX_TOKEN')
 TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
-# CHAT_ID = os.getenv('TELEGRAM_CHAT_ID')
+
 bot = telebot.TeleBot(TELEGRAM_TOKEN)
+y = yadisk.YaDisk(token=YANDEX_TOKEN)
 b = []
 
 @bot.message_handler(content_types=['document'])
@@ -58,9 +59,7 @@ def collect_data(name, src_t, file_info, counter, df_init, res, message):
     url = f'https://www.ozon.ru/search/?from_global=true&text={res}'
     response = requests.get(
                 url=url,
-                headers={'user-agent': f'{ua.random}',
-                'Cookie':'_ga_JNVTMNXQ6F=GS1.1.1640426535.11.1.1640427081.19; tmr_reqNum=230; _dc_gtm_UA-37420525-1=1; _fbp=fb.1.1640245791587.379020311; _ga=GA1.2.927695446.1640245781; _gid=GA1.2.1342864285.1640245783; userId=86541350; __exponea_etc__=4d6c5ea1-34a2-4095-8d7e-b73d96ae5c5e; cto_bundle=CfI1ll9HbmRlZDNqZVVxY1ZHOFdXNEJPZ1BDVkZacURNdDZCd2hvd3RKVTVZaEloYjlpRjFxcHY4RlpERTliRCUyRnNZT09RSGV4bmt2UlVFdmtZJTJCMlJYVkRoVHpuJTJCJTJCSk82YjFjVXZKcjBYJTJGU2pPMTglM0Q; tmr_detect=1%7C1640426975278; __exponea_time2__=0.11290812492370605; tmr_lvid=287c4c516bef2174f533ac42f0a0f1da; tmr_lvidTS=1639525512899; is_adult_confirmed=true; incap_ses_379_1101384=lT7OPWvshVxvwwOlHntCBSHsxmEAAAAAdA8KcPYeoZQQi1ZBIGvZtQ==; __Secure-ab-group=79; __Secure-access-token=3.86541350.RG5vuMilQ9yzbV8tIYZQtQ.79.l8cMBQAAAABhxfKnCaZmq6N3ZWKrNzk5OTcxNDAxNzQAgJCg.20211224161743.20211225120208.uVg4GqBI79dOdXnE4aANIgyRmQYRIuVwTc4rlBf_2EE; __Secure-refresh-token=3.86541350.RG5vuMilQ9yzbV8tIYZQtQ.79.l8cMBQAAAABhxfKnCaZmq6N3ZWKrNzk5OTcxNDAxNzQAgJCg.20211224161743.20211225120208.GAeBJpoAXPTSCTTkRbm7dvCJafZBtAsI1RAVoQfuuWQ; __Secure-user-id=86541350; incap_ses_585_1101384=CrVILF8aoTjhHTR8JVceCCDsxmEAAAAAKIwfvHqBoIgMLHOeJ0N5eg==; nlbi_1101384=FymcANTOD3yrXO/nK8plmQAAAACdjpmwjeRed1mk5/5xViDD; xcid=b685b6ecd560a6efaf5a6b6204bc20f2; cnt_of_orders=0; isBuyer=0; _gcl_au=1.1.1311607219.1640245779; __Secure-ext_xcid=2cbaa67316c6ea12508f03aa9ca90041; visid_incap_1101384=apJ7+ksQQii0kXoTFnZAzYAsuWEAAAAAQUIPAAAAAAAkQumycxPLkRpl0eIoWpAd'}
-            )
+                headers={'user-agent': f'{ua.random}',})
     src = response.text
     try:
         soup_split = BeautifulSoup(src, 'lxml')
@@ -69,9 +68,7 @@ def collect_data(name, src_t, file_info, counter, df_init, res, message):
         url1 = f'https://www.ozon.ru{splited}category_was_predicted=true&from_global=true&text={res}'
         response1 = requests.get(
                 url=url1,
-                headers={'user-agent': f'{ua.random}',
-                'Cookie':'_ga_JNVTMNXQ6F=GS1.1.1640426535.11.1.1640427081.19; tmr_reqNum=230; _dc_gtm_UA-37420525-1=1; _fbp=fb.1.1640245791587.379020311; _ga=GA1.2.927695446.1640245781; _gid=GA1.2.1342864285.1640245783; userId=86541350; __exponea_etc__=4d6c5ea1-34a2-4095-8d7e-b73d96ae5c5e; cto_bundle=CfI1ll9HbmRlZDNqZVVxY1ZHOFdXNEJPZ1BDVkZacURNdDZCd2hvd3RKVTVZaEloYjlpRjFxcHY4RlpERTliRCUyRnNZT09RSGV4bmt2UlVFdmtZJTJCMlJYVkRoVHpuJTJCJTJCSk82YjFjVXZKcjBYJTJGU2pPMTglM0Q; tmr_detect=1%7C1640426975278; __exponea_time2__=0.11290812492370605; tmr_lvid=287c4c516bef2174f533ac42f0a0f1da; tmr_lvidTS=1639525512899; is_adult_confirmed=true; incap_ses_379_1101384=lT7OPWvshVxvwwOlHntCBSHsxmEAAAAAdA8KcPYeoZQQi1ZBIGvZtQ==; __Secure-ab-group=79; __Secure-access-token=3.86541350.RG5vuMilQ9yzbV8tIYZQtQ.79.l8cMBQAAAABhxfKnCaZmq6N3ZWKrNzk5OTcxNDAxNzQAgJCg.20211224161743.20211225120208.uVg4GqBI79dOdXnE4aANIgyRmQYRIuVwTc4rlBf_2EE; __Secure-refresh-token=3.86541350.RG5vuMilQ9yzbV8tIYZQtQ.79.l8cMBQAAAABhxfKnCaZmq6N3ZWKrNzk5OTcxNDAxNzQAgJCg.20211224161743.20211225120208.GAeBJpoAXPTSCTTkRbm7dvCJafZBtAsI1RAVoQfuuWQ; __Secure-user-id=86541350; incap_ses_585_1101384=CrVILF8aoTjhHTR8JVceCCDsxmEAAAAAKIwfvHqBoIgMLHOeJ0N5eg==; nlbi_1101384=FymcANTOD3yrXO/nK8plmQAAAACdjpmwjeRed1mk5/5xViDD; xcid=b685b6ecd560a6efaf5a6b6204bc20f2; cnt_of_orders=0; isBuyer=0; _gcl_au=1.1.1311607219.1640245779; __Secure-ext_xcid=2cbaa67316c6ea12508f03aa9ca90041; visid_incap_1101384=apJ7+ksQQii0kXoTFnZAzYAsuWEAAAAAQUIPAAAAAAAkQumycxPLkRpl0eIoWpAd'}
-            )
+                headers={'user-agent': f'{ua.random}',})
         src1 = response1.text
         soup1 = BeautifulSoup(src1, 'lxml')
         try:
