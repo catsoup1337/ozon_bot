@@ -101,5 +101,6 @@ def saver(name, src_t, file_info, data, message):
     y.upload(src_t, f'{file_info.file_path}')
     d_link = y.get_download_link(file_info.file_path)
     bot.reply_to(message, f"Всё готово, вот ссылка на скачивание {d_link}")
-
-bot.infinity_polling()
+ 
+if __name__ == "__main__":
+    bot.infinity_polling()
